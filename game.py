@@ -1,5 +1,5 @@
 from player import Player
-from computer_player import ComputerPlayer
+from bot import ComputerPlayer
 from dice import Dice
 
 class Game:

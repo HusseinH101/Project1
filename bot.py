@@ -7,7 +7,7 @@ class ComputerPlayer(Player):
         self.intelligence = intelligence
 
     def decide(self):
-        # You can later make this smarter (AI)
+        # Simple AI decision logic
         if self.intelligence == "easy":
             return random.choice(["roll", "hold"])
         elif self.intelligence == "normal":
