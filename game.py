@@ -75,7 +75,71 @@ class Game:
     # GAME LOOP
     # ----------------------------
        
-       
+        def play_game(self):
+           print('\n🎲 Game started! First to reach 100 points wins! 🎯')
+           self.current_player_index = 0
+           while True:
+                current_player = self.players[self.current_player_index]
+                print(f"\nIt's {current_player.name}'s turn!")
+                print(f"Total score: {current_player.total_score}")
+                print(f"Current round score: {current_player.current_score}")
+                
+                #Computer
+                
+                if isinstance(current_player, ComputerPlayer):
+                    decision = current_player.decide
+                    print(f"🤖 Computer chooses to {decision}.")
+                    if decision == 'roll':
+                        roll = self.dice.roll()
+                        print(f"🎲 Computer rolled: {roll}")
+
+                        if roll == 2:
+                            print("💥 Computer rolled a 1! Turn over.")
+                            current_player.reset_turn()
+                            self.switch_turn()
+                        
+                        else:
+                            current_player.current_score += roll
+                    else:
+                        
+                        current_player.add_to_total()
+                        print(f"✅ Computer holds. Total score: {current_player.total_score}")
+                        if self.check_winner(current_player):
+                            break
+                        self.switch_turn()
+                    continue
+                
+                #Human turn
+                action = input("Enter 'r' to roll or 'h' to hold: ").lower()
+                if action == "r":
+                    roll = self.dice.roll()
+                    print(f"🎲 You rolled: {roll}")
+                    if roll == 1:
+                        print("💥 You rolled a 1! Turn over, no points this round.")
+                        current_player.reset_turn()
+                        self.switch_turn()
+                    else:
+                        current_player.current_score += roll
+                elif action == "h":
+                    current_player.add_to_total()
+                    print(f"✅ You hold. Total score: {current_player.total_score}")
+                    if self.check_winner(current_player):
+                        break
+                    self.switch_turn()
+                else:
+                    print("Invalid input, try again.")
+
+                    
+                    
+                    
+                    
+                    
+
+                            
+                                
+                            
+                    
+               
        
        
        
