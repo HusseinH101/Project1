@@ -1,5 +1,4 @@
-""" User interface module for the Pig"""
-
+"""User interface module for the Pig Dice Game."""
 
 import os
 import time
@@ -9,18 +8,18 @@ class UI:
     """Class to handle the user interface with the Pig Dice Game."""
 
     def clear_screen(self):
-        """Clears the screen depending on the operating system."""
+        """Clear the screen depending on the operating system."""
         os.system('cls' if os.name == 'nt' else 'clear')
-    
+
     def print_title(self):
-        """Displays the introduction to the game."""
+        """Display the introduction to the game."""
         print("🎲 WELCOME TO THE PIG DICE GAME 🎲")
-    
+
     def show_dice(self, roll):
-        """Print out a visual representation of the dice roll.
+        """Print a visual representation of the dice roll.
 
         Args:
-            roll (int): Result of the dice toss (1-6).
+            roll (int): Result of the dice toss (1–6).
         """
         dice_style = {
             1: [
@@ -76,7 +75,7 @@ class UI:
         """Display a scoreboard and use ANSI colour code for styling.
 
         Args:
-            players (list): List of player objects, each with name, total_score, and current_score attributes.
+            layers: List of player objects with name, total, and current score.
         """
         print("\n\033[1;33mSCOREBOARD:\033[0m")
         print("-" * 30)
@@ -86,9 +85,9 @@ class UI:
                 f"Current Score: {p.current_score}"
             )
         print("." * 30)
-    
+
     def winner(self, winner):
-        """Declares and congratulates the winner.
+        """Declare and congratulate the winner.
 
         Args:
             winner (object): The player object who won the Pig Dice game.
