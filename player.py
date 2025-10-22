@@ -1,5 +1,6 @@
 class Player:
     def __init__(self, name):
+        """""This function initializes the methods"""
         self.name = name
         self.total_score = 0
         self.current_score = 0
