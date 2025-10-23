@@ -1,8 +1,9 @@
 import random
 
+
 class Dice:
-    def __init__(self, sides=6):
-        self.sides = sides
+    """Represents a 6-sided dice."""
 
     def roll(self):
-        return random.randint(1, self.sides)
+        """Roll the dice and return the result (1-6)."""
+        return random.randint(1, 6)
