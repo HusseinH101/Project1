@@ -2,9 +2,6 @@
 game.py
 --------
 Main Pig Dice Game logic.
-
-Classes:
-    Game: Manages the game state, player setup, menu, turns, and win conditions.
 """
 
 from player import Player
@@ -12,11 +9,11 @@ from bot import ComputerPlayer
 from dice import Dice
 import scoreboard
 
+
 class Game:
     """Main class for Pig Dice Game handling setup, gameplay, and menu."""
 
     def __init__(self):
-        """Initialize a new Game with no players and a dice instance."""
         self.players = []
         self.dice = Dice()
         self.current_player_index = 0
@@ -57,7 +54,7 @@ class Game:
     # PLAYER SETUP
     # ----------------------------
     def start_single_player(self):
-        """Initialize a single-player game against a computer with configurable intelligence."""
+        """Initialize a single-player game against a computer."""
         name = input("Enter your name: ").strip()
         while True:
             lvl = input("Choose computer intelligence (easy, normal, hard) [normal]: ").strip().lower()
@@ -93,6 +90,7 @@ class Game:
         print("\nCurrent players in scoreboard:")
         for i, name in enumerate(players, start=1):
             print(f"{i}. {name}")
+
         old = input("Enter current player name to change (exact): ").strip()
         if not old:
             print("Invalid input.")
@@ -120,12 +118,13 @@ class Game:
     # GAME LOOP
     # ----------------------------
     def play_game(self):
-        """Main game loop handling turns, rolling, holding, cheating, and quitting."""
+        """Main game loop handling turns and actions."""
         self.current_player_index = 0
+
         while True:
             current = self.players[self.current_player_index]
             self._print_status()
-            print(f"\n{current.name}'s turn: total={getattr(current, 'total_score', 0)}, current={getattr(current, 'current_score', 0)}")
+            print(f"\n{current.name}'s turn: total={current.total_score}, current={current.current_score}")
 
             if isinstance(current, ComputerPlayer):
                 decision = current.decide()
@@ -145,8 +144,9 @@ class Game:
                     self.switch_turn()
                 continue
 
+            # Human player turn
             while True:
-                action = input("Enter 'r' to roll, 'h' to hold, 'c' to cheat (auto-roll 6), or 'q' to quit to menu: ").strip().lower()
+                action = input("Enter 'r' to roll, 'h' to hold, 'c' to cheat (auto-roll 6), or 'q' to quit: ").strip().lower()
                 if action not in ("r", "h", "c", "q"):
                     print("Invalid input, try again.")
                     continue
@@ -161,41 +161,35 @@ class Game:
                     self.switch_turn()
                 else:
                     current.current_score += roll
+
             elif action == "h":
                 current.add_to_total()
                 if self.check_winner(current):
                     return
                 self.switch_turn()
+
             elif action == "c":
                 roll = self.dice.roll(cheat_number=6)
-                print(f"😈 Cheat activated! You rolled a 6!")
+                print("😈 Cheat activated! You rolled a 6!")
                 current.current_score += roll
+
             elif action == "q":
                 print("Quitting current game and returning to menu.")
                 for p in self.players:
-                    if hasattr(p, "current_score"):
-                        p.current_score = 0
+                    p.current_score = 0
                 return
 
     # ----------------------------
     # TURN & WIN LOGIC
     # ----------------------------
     def switch_turn(self):
-        """Switch to the next player's turn."""
+        """Switch to next player."""
         if not self.players:
-            self.current_player_index = 0
             return
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
 
     def check_winner(self, player):
-        """Check if a player has won (total >= 100) and update scoreboard.
-
-        Args:
-            player: Player object to check.
-
-        Returns:
-            bool: True if the player won, else False.
-        """
+        """Check win condition and update scoreboard."""
         if player.total_score >= 100:
             print(f"\n🏆 {player.name} wins with {player.total_score} points! 🏆")
             scoreboard.update_score(player.name, self.players)
@@ -203,18 +197,21 @@ class Game:
         return False
 
     # ----------------------------
-    # SMALL UI HELPERS
+    # DISPLAY HELPERS
     # ----------------------------
     def _print_status(self):
-        """Print a simple text-based progress bar for each player."""
+        """Print a coarse progress bar (out of 10) based on total + current turn points.
+
+        Uses total + current so a player who has accumulated points in the current
+        turn sees the progress immediately (e.g. after cheating)."""
         parts = []
         for p in self.players:
             total = getattr(p, "total_score", 0)
-            bar = ("█" * (total // 10))[:10]
-            parts.append(f"{p.name}: [{bar:<10}] {total}pts")
+            current = getattr(p, "current_score", 0)
+            progress = min(total + current, 100)  # cap at 100
+            filled = progress // 10                # 0..10 blocks
+            bar = "█" * filled
+            parts.append(f"{p.name}: [{bar:<10}] {total}pts (+{current})")
         if parts:
             print("\n" + " | ".join(parts))
 
-
-if __name__ == "__main__":
-    Game().show_menu()

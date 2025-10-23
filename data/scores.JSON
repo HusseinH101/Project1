@@ -1,0 +1,16 @@
+{
+    "players": {
+        "77452b66-e26a-454d-8a7a-3db9f3171dc0": {
+            "name": "Hussein",
+            "games": 1,
+            "wins": 1,
+            "losses": 0
+        },
+        "92d14982-793e-4025-a00a-07d60018d5fc": {
+            "name": "Computer",
+            "games": 1,
+            "wins": 0,
+            "losses": 1
+        }
+    }
+}

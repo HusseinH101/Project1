@@ -2,11 +2,9 @@ from game import Game
 
 def main():
     print("🐷 Welcome to Pig Dice Game! 🐷")
-    
-    # Create a Game instance
+
+    # Create and start the game
     game = Game()
-    
-    # Show menu
     game.show_menu()
 
 if __name__ == "__main__":
