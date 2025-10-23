@@ -64,3 +64,9 @@ start htmlcov/index.html #For Windows
 open htmlcov/index.html #For macOS
 
 
+To install all dependencies:
+```bash
+pip install -r requirements.txt
+
+
+
