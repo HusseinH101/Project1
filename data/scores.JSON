@@ -1,33 +1,28 @@
 {
     "players": {
-<<<<<<< HEAD
-        "517ea87b-1599-404c-901a-7c34c87db961": {
-=======
-        "77452b66-e26a-454d-8a7a-3db9f3171dc0": {
->>>>>>> Hussein
-            "name": "Hussein",
+        "fd8daba4-b81f-4db4-8428-303b42ccbbee": {
+            "name": "HUssein",
             "games": 1,
             "wins": 1,
             "losses": 0
         },
-<<<<<<< HEAD
-        "86ce44d5-47ce-48b4-b10a-178b5208d8c8": {
-=======
-        "92d14982-793e-4025-a00a-07d60018d5fc": {
->>>>>>> Hussein
+        "1b5ca0b7-f3cd-43a8-8347-3b7e6bb06d50": {
             "name": "Computer",
             "games": 1,
             "wins": 0,
             "losses": 1
-<<<<<<< HEAD
         },
-        "826c09eb-d43c-4d56-b980-5a23b54a7706": {
-            "name": "Hodroy",
+        "3973af2c-9322-436a-81ff-468f37fdf28f": {
+            "name": "z",
             "games": 0,
             "wins": 0,
             "losses": 0
-=======
->>>>>>> Hussein
+        },
+        "9e7f4bba-4794-45ca-9b85-cd6664f38493": {
+            "name": "s",
+            "games": 0,
+            "wins": 0,
+            "losses": 0
         }
     }
 }

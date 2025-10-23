@@ -92,13 +92,20 @@ class Game:
             print(f"{i}. {name}")
 
         old = input("Enter current player name to change (exact): ").strip()
-        if not old:
-            print("Invalid input.")
+        if not old or old not in players:
+            print(f"Invalid input. Player '{old}' does not exist.")
             return
+
         new = input("Enter new name: ").strip()
         if not new:
             print("Invalid input.")
             return
+
+        scoreboard.rename_player(old, new)
+        print(f"Renamed/migrated stats from '{old}' -> '{new}'.")
+
+            
+            
 
         scoreboard.rename_player(old, new)
         print(f"Renamed/migrated stats from '{old}' -> '{new}'.")
