@@ -1,0 +1,13 @@
+digraph "packages_PigDice" {
+rankdir=BT
+charset="utf-8"
+"bot" [color="black", label=<bot>, shape="box", style="solid"];
+"dice" [color="black", label=<dice>, shape="box", style="solid"];
+"game" [color="black", label=<game>, shape="box", style="solid"];
+"player" [color="black", label=<player>, shape="box", style="solid"];
+"scoreboard" [color="black", label=<scoreboard>, shape="box", style="solid"];
+"ui" [color="black", label=<ui>, shape="box", style="solid"];
+"game" -> "bot" [arrowhead="open", arrowtail="none"];
+"game" -> "dice" [arrowhead="open", arrowtail="none"];
+"game" -> "player" [arrowhead="open", arrowtail="none"];
+}
