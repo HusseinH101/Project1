@@ -1,17 +1,26 @@
+"""
+game.py
+--------
+Main Pig Dice Game logic.
+"""
+
 from player import Player
 from bot import ComputerPlayer
 from dice import Dice
 import scoreboard
 
+
 class Game:
     """Main class for Pig Dice Game handling setup, gameplay, and menu."""
 
     def __init__(self):
-        """Initialize a new Game with no players and a dice instance."""
         self.players = []
         self.dice = Dice()
         self.current_player_index = 0
 
+    # ----------------------------
+    # MENU
+    # ----------------------------
     def show_menu(self):
         """Display the game menu and handle user choices."""
         while True:
@@ -41,6 +50,9 @@ class Game:
             else:
                 print("Invalid choice, try again.")
 
+    # ----------------------------
+    # PLAYER SETUP
+    # ----------------------------
     def start_single_player(self):
         """Initialize a single-player game against a computer."""
         name = input("Enter your name: ").strip()
@@ -65,6 +77,9 @@ class Game:
         print(f"Starting game: {name1} vs {name2}")
         self.play_game()
 
+    # ----------------------------
+    # CHANGE PLAYER NAME
+    # ----------------------------
     def change_player_name(self):
         """Allow user to change a player's name and migrate scores."""
         players = scoreboard.list_players()
@@ -75,6 +90,7 @@ class Game:
         print("\nCurrent players in scoreboard:")
         for i, name in enumerate(players, start=1):
             print(f"{i}. {name}")
+
         old = input("Enter current player name to change (exact): ").strip()
         if not old:
             print("Invalid input.")
@@ -87,6 +103,9 @@ class Game:
         scoreboard.rename_player(old, new)
         print(f"Renamed/migrated stats from '{old}' -> '{new}'.")
 
+    # ----------------------------
+    # RULES
+    # ----------------------------
     def show_rules(self):
         """Display the game rules."""
         print("\n📜 Rules of Pig Dice Game:")
@@ -95,13 +114,17 @@ class Game:
         print("3. You can hold to save your points and end your turn.")
         print("4. First to reach 100 points wins!\n")
 
+    # ----------------------------
+    # GAME LOOP
+    # ----------------------------
     def play_game(self):
-        """Main game loop handling turns, rolling, holding, cheating, and quitting."""
+        """Main game loop handling turns and actions."""
         self.current_player_index = 0
+
         while True:
             current = self.players[self.current_player_index]
             self._print_status()
-            print(f"\n{current.name}'s turn: total={getattr(current, 'total_score', 0)}, current={getattr(current, 'current_score', 0)}")
+            print(f"\n{current.name}'s turn: total={current.total_score}, current={current.current_score}")
 
             if isinstance(current, ComputerPlayer):
                 decision = current.decide()
@@ -116,39 +139,79 @@ class Game:
                         current.current_score += roll
                 else:
                     current.add_to_total()
+                    if self.check_winner(current):
+                        return
                     self.switch_turn()
-            else:
-                action = input("Press 'r' to roll or 'h' to hold: ").strip().lower()
-                if action == "r":
-                    roll = self.dice.roll()
-                    print(f"You rolled: {roll}")
-                    if roll == 1:
-                        current.reset_turn()
-                        self.switch_turn()
-                    else:
-                        current.current_score += roll
-                elif action == "h":
-                    current.add_to_total()
+                continue
+
+            # Human player turn
+            while True:
+                action = input("Enter 'r' to roll, 'h' to hold, 'c' to cheat (auto-roll 6), or 'q' to quit: ").strip().lower()
+                if action not in ("r", "h", "c", "q"):
+                    print("Invalid input, try again.")
+                    continue
+                break
+
+            if action == "r":
+                roll = self.dice.roll()
+                print(f"You rolled: {roll}")
+                if roll == 1:
+                    print("💥 You rolled a 1! Turn over, no points this round.")
+                    current.reset_turn()
                     self.switch_turn()
                 else:
-                    print("Invalid choice, please press 'r' to roll or 'h' to hold.")
+                    current.current_score += roll
 
+            elif action == "h":
+                current.add_to_total()
+                if self.check_winner(current):
+                    return
+                self.switch_turn()
+
+            elif action == "c":
+                roll = self.dice.roll(cheat_number=6)
+                print("😈 Cheat activated! You rolled a 6!")
+                current.current_score += roll
+
+            elif action == "q":
+                print("Quitting current game and returning to menu.")
+                for p in self.players:
+                    p.current_score = 0
+                return
+
+    # ----------------------------
+    # TURN & WIN LOGIC
+    # ----------------------------
     def switch_turn(self):
-        """Switch to the next player's turn."""
+        """Switch to next player."""
+        if not self.players:
+            return
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
-        if any(player.total_score >= 100 for player in self.players):
-            self.end_game()
 
-    def end_game(self):
-        """End the game and declare a winner."""
-        winner = max(self.players, key=lambda p: p.total_score)
-        print(f"\n🎉 {winner.name} wins the game with {winner.total_score} points! 🎉")
-        scoreboard.update_score(winner.name, self.players)
-        self.show_menu()
+    def check_winner(self, player):
+        """Check win condition and update scoreboard."""
+        if player.total_score >= 100:
+            print(f"\n🏆 {player.name} wins with {player.total_score} points! 🏆")
+            scoreboard.update_score(player.name, self.players)
+            return True
+        return False
 
+    # ----------------------------
+    # DISPLAY HELPERS
+    # ----------------------------
     def _print_status(self):
-        """Print the current status of the game."""
-        print(f"\n{'-'*30}")
-        for player in self.players:
-            print(f"{player.name}: Total={player.total_score}, Current={player.current_score}")
-        print(f"{'-'*30}")
+        """Print a coarse progress bar (out of 10) based on total + current turn points.
+
+        Uses total + current so a player who has accumulated points in the current
+        turn sees the progress immediately (e.g. after cheating)."""
+        parts = []
+        for p in self.players:
+            total = getattr(p, "total_score", 0)
+            current = getattr(p, "current_score", 0)
+            progress = min(total + current, 100)  # cap at 100
+            filled = progress // 10                # 0..10 blocks
+            bar = "█" * filled
+            parts.append(f"{p.name}: [{bar:<10}] {total}pts (+{current})")
+        if parts:
+            print("\n" + " | ".join(parts))
+

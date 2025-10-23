@@ -28,15 +28,14 @@ class ComputerPlayer:
 >>>>>>> Jeyson
 
     def reset_turn(self):
-        """Reset the computer player's current score."""
         self.current_score = 0
 
     def add_to_total(self):
-        """Add the current score to total score."""
         self.total_score += self.current_score
         self.current_score = 0
 
     def decide(self):
+<<<<<<< HEAD
 <<<<<<< HEAD
         """Decide the computer's action based on difficulty level.
 
@@ -58,10 +57,13 @@ class ComputerPlayer:
         return "roll"
 =======
         """Decide whether to 'roll' or 'hold' based on intelligence level."""
+=======
+        """AI logic for roll vs hold."""
+>>>>>>> Hussein
         if self.intelligence == "easy":
             return "roll" if random.random() < 0.75 else "hold"
         elif self.intelligence == "normal":
             return "roll" if self.current_score < 20 else "hold"
-        else:  # hard level
+        else:
             return "roll" if self.current_score < 30 else "hold"
 >>>>>>> Jeyson
