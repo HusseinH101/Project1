@@ -9,3 +9,4 @@ class Dice:
         if cheat_number is not None:
             return cheat_number
         return random.randint(1, 6)
+

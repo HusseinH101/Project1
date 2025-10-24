@@ -1,3 +1,4 @@
+
 import json
 import os
 import uuid
@@ -103,3 +104,4 @@ def list_players():
     """List all players."""
     data = _load_data()
     return [p["name"] for p in data["players"].values()]
+

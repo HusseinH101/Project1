@@ -1,27 +1,39 @@
 {
     "players": {
-        "fd8daba4-b81f-4db4-8428-303b42ccbbee": {
-            "name": "HUssein",
-            "games": 1,
-            "wins": 1,
+        "38b12a7b-37eb-498b-8d35-631b4a53fcd8": {
+            "name": "A",
+            "games": 2,
+            "wins": 2,
             "losses": 0
         },
-        "1b5ca0b7-f3cd-43a8-8347-3b7e6bb06d50": {
+        "811f6b42-6d38-48f8-9566-6095c0c3d65c": {
+            "name": "B",
+            "games": 2,
+            "wins": 0,
+            "losses": 2
+        },
+        "f5bfdcfa-3658-486e-9e4f-96d6fa8b1988": {
+            "name": "HH",
+            "games": 2,
+            "wins": 2,
+            "losses": 0
+        },
+        "98541990-a91b-49fa-9a0e-4ebac82a690b": {
             "name": "Computer",
+            "games": 2,
+            "wins": 0,
+            "losses": 2
+        },
+        "25ca6110-4448-4834-906b-c5fb81781395": {
+            "name": "Josef",
             "games": 1,
             "wins": 0,
             "losses": 1
         },
-        "3973af2c-9322-436a-81ff-468f37fdf28f": {
-            "name": "z",
-            "games": 0,
-            "wins": 0,
-            "losses": 0
-        },
-        "9e7f4bba-4794-45ca-9b85-cd6664f38493": {
-            "name": "s",
-            "games": 0,
-            "wins": 0,
+        "ba4a69b0-7df3-4338-af3d-e18699c07cba": {
+            "name": "Mimmi",
+            "games": 1,
+            "wins": 1,
             "losses": 0
         }
     }

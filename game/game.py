@@ -221,4 +221,3 @@ class Game:
             parts.append(f"{p.name}: [{bar:<10}] {total}pts (+{current})")
         if parts:
             print("\n" + " | ".join(parts))
-
